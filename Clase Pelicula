@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<h1> Ejercicio del profe</h1>
+<body>
+    <script>
+
+  
+
+  
+
+class Pelicula {
+  
+  constructor({id, titulo, director, lanzamiento, paises, genero, calificacion}){  
+  this.id = id
+  this.titulo = titulo 
+  this.director = director
+  this.lanzamiento = lanzamiento
+  this.paises = paises
+  this.genero = genero
+  this.calificacion = calificacion
+
+  this.validarIMDB(id)
+  this.validarTitulo(titulo)
+  this.validarDirector(director)
+  this.validarLanzamiento(lanzamiento)
+  this.validarPaises(paises)
+  this.validarGeneros(genero)
+  this.validarCalificacion(calificacion)
+  }
+  
+  static get listaDeGeneros(){
+    return (["Action", "Adult", "Adventure", "Animation", "Biography", "Comedy", "Crime", "Documentary" ,"Drama", 
+    "Family", "Fantasy", "Film Noir", "Game-Show", "History", "Horror", "Musical","Music", "Mistery", "News", "Reality-TV",
+     "Romance", "Sci-Fi", "Short", "Sport", "Talk-Show", "Thriller", "War", "Western"]);
+  };
+
+ static GenerosAceptados(){
+ return console.info(`los generos aceptados son ${Pelicula.listaDeGeneros.join(", ")}`);
+  }
+
+
+
+  validarCadena(propiedad, valor){
+    if (!valor) return console.warn(`${propiedad} ${valor} esta vacio`)
+
+
+  if (typeof valor !== "string") return console.error(`${propiedad} "${valor}" ingresado NO es una cadena de texto`)
+  return true
+  }
+validarLongitudCadena(propiedad, valor, longitud){
+if (valor.length > longitud) return console.error(`${propiedad} "${valor}" excede el numero de caracteres permitidos ${longitud}`)  
+
+return true
+}
+
+ validarNumero(propiedad, valor) {
+    if (!valor) return console.warn("No ingresaste ningun valor")
+  
+   if (typeof valor !== "number") return console.error(`${propiedad} "${valor}" ingresado, NO es un numero`)
+
+   return true
+
+ }
+ validarArreglo(propiedad, valor){
+  if (!valor) return  console.warn(`No has introducido ningun arreglo`)
+
+if (!(valor instanceof Array)) return console.error(`${propiedad} "${valor}" deben ser introducidos en forma de arreglo`)
+
+if (valor.length === 0)return  console.error("El arreglo esta vacio")
+
+for (const apuntador1 of valor) {
+  if (typeof apuntador1 !== "string") return console.error("El arreglo debe tener string")
+ }
+ return true
+ }
+
+
+  validarIMDB(id){
+if (this.validarCadena("IMDB id", id)){
+  if(!(/^[a-z]{2}[0-9]{7}$/.test(id))) return console.error(`el IMDB ${id} no es correcto debe tener 2 letras y 7 numeros`)
+  }
+}
+validarTitulo(titulo){
+if (this.validarCadena("Titulo", titulo))
+this.validarLongitudCadena("titulo", titulo, 100)
+ 
+}
+
+validarDirector(director){
+if (this.validarCadena("Director", director))
+this.validarLongitudCadena("Director", director, 50)
+}
+
+ validarLanzamiento(lanzamiento){
+   if (this.validarNumero("Año de estreno", lanzamiento))
+
+  if (!(/^([0-9]){4}$/.test(lanzamiento)))
+  return console.error(`año de ${lanzamiento} No es valido, debe ser un numero de 4 digitos`)
+ }
+
+validarPaises(paises){
+  this.validarArreglo("Paises", paises)
+}
+
+validarGeneros(genero){
+  if  (this.validarArreglo("Generos", genero)){
+    for (const apuntadorDeGenero of genero) {
+    //console.log(apuntadorDeGenero, Pelicula.listaDeGeneros.includes(genero))
+    
+    if (!Pelicula.listaDeGeneros.includes(apuntadorDeGenero)){
+    console.error(`Generos incorrectos "${genero.join(", ")}"`);
+    Pelicula.GenerosAceptados();
+    }
+  }
+}
+}
+
+validarCalificacion(calificacion){
+   if (this.validarNumero("La calificacion es:", calificacion))
+   return (calificacion < 0 || calificacion > 10)
+   ? console.error(`La calificacion tiene que estar en un rango de 0 a 10`)
+   : this.calificacion = calificacion.toFixed(1)
+}
+ 
+
+
+fichaTecnica (){
+console.info(`Ficha tecnica: \nTitulo: "${this.titulo}"" \nDirector: "${this.director}"  \nLanzamiento: "${this.lanzamiento}" \nPaises: "${this.paises.join("-")}" \nGeneros: "${this.genero.join(", ")}" \nCalificacion: "${this.calificacion}" \nIMDB ID: "${this.id}"`)
+
+}
+
+
+
+
+}
+
+//Pelicula.GenerosAceptados();
+const ElPadrino = new Pelicula({
+  id: "aa1234891",
+  titulo: "El padrino",
+  director: "Alpacino",
+  lanzamiento: 2020 ,
+  paises: ["Venezuela", "Peru"],
+  genero: ["Adult",],
+  calificacion: 7.789
+
+})
+ElPadrino.fichaTecnica() 
+
+const peliculas = [
+  {
+    id: "tt1234567",
+    titulo: "el titulo",
+    director: "Manuel Medarno",
+    lanzamiento: 2020,
+    paises: ["Mexico", "Peru"],
+    genero: ["Comedy", "Sport"],
+    calificacion: 1,
+  },
+  {
+    id: "tt1234567",
+    titulo: "el titulo",
+    director: "Manuel medarno",
+    lanzamiento: 2020,
+    paises: ["Mexico", "Peru"],
+    genero: ["Comedy", "Sport"],
+    calificacion: 2,
+  },
+  {
+    id: "tt1234567",
+    titulo: "el titulo",
+    director: "Manuel medarno",
+    lanzamiento: 2020,
+    paises: ["Mexico"],
+    genero: ["Comedy", "Sport"],
+    calificacion: 8.789,
+  },
+];
+
+peliculas.forEach(cadaElemento => new Pelicula(cadaElemento).fichaTecnica());
+
+
+
+  
+
+    </script>
+</body>
+</html>
